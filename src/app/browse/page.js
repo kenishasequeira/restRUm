@@ -1,33 +1,34 @@
 'use client';
 
-import React from 'react'
-import { GoogleMap, LoadScript } from '@react-google-maps/api';
+import { useMemo } from "react";
+import { GoogleMap, useLoadScript } from "@react-google-maps/api";
 
-const containerStyle = {
-  width: '400px',
-  height: '400px'
-};
+export default function Browse() {
+    const { isLoaded } = useLoadScript({
+        googleMapsApiKey: "AIzaSyChXfJ4hhbLu-8k7JDP3H9BojfpR9SvArc",
+    });
 
-const center = {
-  lat: 40.500979167976396, 
-  lng: -74.44743886129068
-};
-
-function MyComponent() {
-  return (
-    <LoadScript
-      googleMapsApiKey="AIzaSyChXfJ4hhbLu-8k7JDP3H9BojfpR9SvArc"
-    >
-      <GoogleMap
-        mapContainerStyle={containerStyle}
-        center={center}
-        zoom={10}
-      >
-        { /* Child components, such as markers, info windows, etc. */ }
-        <></>
-      </GoogleMap>
-    </LoadScript>
-  )
+    if (!isLoaded) 
+        return <div>Loading...</div>;
+    return <Map />;
 }
 
-export default React.memo(MyComponent)
+function Map() {
+    // Sets the center at College Ave
+    const center = useMemo(() => ({ lat: 40.50098, lng: -74.44740 }), []);
+    // Might want to move below line to CSS later
+    const containerStyle = { width: '100%', height: '100vh' };
+
+    return (
+        <GoogleMap 
+            zoom={15} 
+            center={center} 
+            mapContainerStyle={containerStyle}
+        >
+
+        * Child components like markers will go in here later */
+        <></>
+
+        </GoogleMap>
+    );
+}
